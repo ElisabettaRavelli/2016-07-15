@@ -3,6 +3,7 @@ package it.polito.tdp.flight;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.flight.model.Airport;
 import it.polito.tdp.flight.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,8 +31,22 @@ public class FlightController {
 
 	@FXML
 	void doCreaGrafo(ActionEvent event) {
+		try {
+		Double distanzaMax = Double.parseDouble(txtDistanzaInput.getText());
+		this.model.creaGrafo(distanzaMax);
+		txtResult.clear();
+		txtResult.appendText(String.format("Grafo creato di %d vertici e %d archi\n", this.model.getVertici(), this.model.getArchi()));
+		int cc = this.model.calcolaCC();
+		txtResult.appendText("Numero di componenti connesse nel grafo: " + cc + "\n");
 		
+		Airport a = this.model.piuLondanoDaFiumicino();
+		txtResult.appendText("Aeroporto più lontano raggiungibile da Fiumicino: " + a.toString() + "\n");
+		
+		}catch(NumberFormatException e) {
+			txtResult.appendText("Si deve inserire una distanza massima\n");
+		}
 	}
+	
 
 	@FXML
 	void doSimula(ActionEvent event) {
